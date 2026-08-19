@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+@theme {
+  /* ——— Roast & Row tokens ——— */
+  --color-ink: #1b1712;
+  --color-ink-deep: #241e17;
+  --color-parchment: #efe6d6;
+  --color-cascara: #b23a2e;
+  --color-cascara-deep: #97301f;
+  --color-leaf: #6b7a4f;
+  --color-char: #4a3f36;
+  --color-smoke: #8c8275;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-cascara);
+  color: var(--color-parchment);
+}
+
+/* ——— ambient layers ——— */
+
+.grid-paper {
+  background-image:
+    linear-gradient(rgba(239, 230, 214, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(239, 230, 214, 0.045) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ——— hero roast curve draw-in ——— */
+
+.curve-path {
+  stroke-dasharray: 1700;
+  stroke-dashoffset: 1700;
+  animation: curve-draw 1.8s 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.curve-fade {
+  opacity: 0;
+  animation: curve-fade 0.6s 1.6s ease-out forwards;
+}
+@keyframes curve-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes curve-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ——— lot ticker ——— */
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 36s linear infinite;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ——— scroll reveal ——— */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ——— card enter (after filter change) ——— */
+
+.card-in {
+  animation: card-in 0.3s ease-out both;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ——— cart badge pop ——— */
+
+.badge-pop {
+  animation: badge-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes badge-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ——— skeleton shimmer ——— */
+
+.skel {
+  background: linear-gradient(
+    100deg,
+    rgba(27, 23, 18, 0.07) 40%,
+    rgba(27, 23, 18, 0.14) 50%,
+    rgba(27, 23, 18, 0.07) 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ——— dual price range inputs ——— */
+
+.rr-range {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+}
+.rr-range::-webkit-slider-runnable-track {
+  height: 3px;
+  background: transparent;
+}
+.rr-range::-moz-range-track {
+  height: 3px;
+  background: transparent;
+}
+.rr-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 14px;
+  height: 14px;
+  margin-top: -5.5px;
+  border-radius: 2px;
+  background: var(--color-ink);
+  border: 2px solid var(--color-parchment);
+  box-shadow: 0 1px 4px rgba(27, 23, 18, 0.45);
+  cursor: ew-resize;
+}
+.rr-range::-moz-range-thumb {
+  pointer-events: auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--color-ink);
+  border: 2px solid var(--color-parchment);
+  box-shadow: 0 1px 4px rgba(27, 23, 18, 0.45);
+  cursor: ew-resize;
+}
+.rr-range:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-cascara);
+  outline-offset: 2px;
+}
+
+/* ——— drawer scrollbar ——— */
+
+.ledger-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.ledger-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-char);
+  border-radius: 3px;
+}
+.ledger-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ——— reduced motion: everything settles instantly ——— */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .curve-path {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+  .curve-fade {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .ticker-track {
+    animation: none !important;
+  }
+}
